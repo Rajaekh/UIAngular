@@ -7,7 +7,7 @@ export class User {
   role: Role = Role.CLIENT;
   titre: string = '';
   typePieceIdentity: string = '';
-  n_identity: string = '';
+  nIdentity: string = '';
   gsm: string = '';
   numeroPieceIdentite: string = '';
   dateExpirationPiece: Date = new Date();
