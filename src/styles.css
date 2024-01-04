@@ -1,1 +1,28 @@
 /* You can add global styles to this file, and also import other style files */
+
+@import '~bootstrap-icons/font/bootstrap-icons.css';
+
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+@import '~ngx-toastr/toastr';
+/* You can add global styles to this file, and also import other style files */
+body {
+  direction: ltr;
+}
+.mouse-hover{
+  cursor: pointer;
+
+}
+form label{
+  text-transform: uppercase;
+  color: gray;
+}
+form input{
+  font-weight: 500;
+}
+form input::placeholder{
+color: #c0bdbd;
+font-weight: 300;
+}
+form.submitted input.ng-invalid{
+  border-color: red;
+}

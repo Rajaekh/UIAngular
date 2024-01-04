@@ -1,0 +1,78 @@
+
+
+
+  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav me-auto mb-2 mb-lg-0">
+        </div>
+        <form class="d-flex" #form="ngForm" (ngSubmit)="searchTransferts()">
+          <!-- <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"> -->
+          <input type="text" class="form-control me-2" placeholder="Transfer Reference" [(ngModel)]="service.TransferReference" name="TransferReference" required aria-label="Search">
+
+          <button type="submit" class="btn btn-warning" style="border-color:#0F7490; color:white;background-color: #0F7490;"><i class="bi bi-search"></i></button>
+        </form>
+      </div>
+    </div>
+  </nav>
+  <div class="table-responsive">
+   <table class="table border mb-0 table-hover" style="max-width:100%;">
+    <thead class="table-light fw-semibold">
+      <tr class="align-middle">
+        <th>Transfer Type</th>
+        <th>ID Agent</th>
+        <th>Client </th>
+        <th>Beneficiary </th>
+        <th>Amount</th>
+        <th>Transfer Date</th>
+        <th>Transfer Reference</th>
+        <th>Transfer Reasons</th>
+        <th>Notified</th>
+        <th>Fees</th>
+
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr  *ngFor="let trans of service.transfers">
+        <td >
+          {{trans.typeTransfert}}
+        </td>
+        <td >
+          {{trans.idagent}}
+        </td>
+        <td >
+          {{trans.nomClient}}
+        </td>
+        <td >
+          {{trans.nomBeneficiaire}}
+        </td>
+        <td >
+          <ng-container>{{ trans.montant }} </ng-container>dh
+        </td>
+        <td >{{ trans.dataeTransfert | date: 'MM/dd/yyyy' }}</td>
+        <td>{{trans.reference}}</td>
+        <td >
+          {{trans.motifsTransfert}}
+        </td>
+        <td >
+          {{ trans.notified ? 'Oui' : 'Non' }}
+        </td>
+        <td >
+          {{trans.frais}}
+        </td>
+        <td class="d-flex align-items-center">
+          <span class="badge bg-info">{{trans.status}}</span>
+          <a class="nav-link" *ngIf="trans.status" [routerLink]="['/editT', trans.reference]">
+            <svg class="nav-icon" width="16px" height="16px" style="color:#0F7490;">
+              <use xlink:href="assets/vendors/@coreui/icons/svg/free.svg#cil-pencil"></use>
+            </svg>
+          </a>
+          <a class="btn btn-sm" style="background-color: white;color: #0F7490; font-size:20px;" (click)="PreviewInvoice(trans.id)"><strong><i class="bi bi-box-arrow-in-down" style="font-weight: bold; width: 16px;height: 16px;"></i></strong>
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+

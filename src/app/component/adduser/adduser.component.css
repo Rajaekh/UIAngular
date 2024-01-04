@@ -1,0 +1,13 @@
+.input-field {
+  width: 100%;
+  /* Ajoutez d'autres styles au besoin */
+}
+.error-message {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+}
+.error-message-required {
+  color: red;
+  font-size: 12px;
+}

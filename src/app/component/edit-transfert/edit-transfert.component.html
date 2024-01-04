@@ -1,0 +1,136 @@
+
+<div class="container mt-4">
+  <div class="container mt-4">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+    <div class="form-group row">
+      <div class="col-md-6 mb-3">
+        <label>Client</label>
+        <input type="text" class="form-control input-field"  #nomBeneficiaire="ngModel" name="nomClient" required
+        [(ngModel)]="trasferttrouve.nomClient" readonly>
+      </div>
+      <div class="col-md-6 mb-3">
+        <label>Beneficiaire</label>
+        <input type="text" class="form-control input-field"  #nomBeneficiaire="ngModel" name="nomBeneficiaire" required
+        [(ngModel)]="trasferttrouve.nomBeneficiaire" readonly>
+      </div>
+    </div>
+      <div class="form-group row">
+        <div class="col-md-6 mb-3">
+          <label> Transfer Amount</label>
+          <input type="number" class="form-control input-field"  #montant="ngModel" name="montant" required
+          placeholder="Amount" [(ngModel)]="trasferttrouve.montant"
+          [min]="100"
+          [ngClass]="{'error-input-required':form.submitted && montant.invalid}" readonly>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label> Transfer Date</label>
+          <input type="text" class="form-control input-field"  #dataeTransfert="ngModel" name="dataeTransfert" required
+          [(ngModel)]="trasferttrouve.dataeTransfert" readonly>
+        </div>
+      </div>
+      <div class="form-group row">
+
+        <div class="col-md-6 mb-3">
+          <label> Transfer Reasons</label>
+          <input type="text" class="form-control input-field"  #motifsTransfert="ngModel" name="motifsTransfert" required
+          [(ngModel)]="trasferttrouve.motifsTransfert" readonly>
+                </div>
+    <div class="col-md-6 mb-3">
+      <label> Transfer Type</label>
+      <input type="text" class="form-control input-field"  #typeTransfert="ngModel" name="typeTransfert" required
+      [(ngModel)]="trasferttrouve.typeTransfert" readonly>
+    </div>
+    </div>
+    <div class="form-group row">
+      <div class="col-md-6 mb-3">
+        <label>Fee amount</label>
+        <input type="text" class="form-control input-field"  #idagent="ngModel" name="idagent" required
+        [(ngModel)]="trasferttrouve.idagent" readonly>
+      </div>
+      <div class="col-md-6 mb-3">
+        <label> Transfer Frees</label>
+        <input type="text" class="form-control input-field"  #frais="ngModel" name="frais" required
+        [(ngModel)]="trasferttrouve.frais" readonly>
+      </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-6 mb-3">
+          <label> ID Agent</label>
+          <input type="text" class="form-control input-field"  #idagent="ngModel" name="idagent" required
+          [(ngModel)]="trasferttrouve.idagent" readonly>
+        </div>
+        </div>
+    </div>
+  </div>
+
+  </div>
+
+  </div>
+  </div>
+
+  </div>
+      <div class="container mt-4">
+        <div class="container mt-4">
+          <div class="row justify-content-center">
+            <div class="col-md-6">
+              <div class="card">
+                <div class="card-body">
+  <form #form="ngForm" (ngSubmit)="submitTransfertForm(form)">
+  <input type="hidden" class="form-control input-field"  name="id" [(ngModel)]="trasferttrouve.id">
+  <div class="form-group row">
+    <div class="col-md-6 mb-3">
+      <label>Transfer Status</label>
+    <select class="form-control input-field" id="Status" [(ngModel)]="trasferttrouve.status" name="status" >
+      <option *ngFor="let type of service.Status" [value]="type">
+        {{ type }}
+      </option>
+    </select>
+  </div>
+  <div class="col-md-6 mb-3" *ngIf="trasferttrouve.status==='Extourné'">
+    <label>Select Motif of Restitution</label>
+    <select class="form-control input-field" id="motifRestitution" [(ngModel)]="trasferttrouve.motifRestitution" name="motifRestitution">
+      <option *ngFor="let type of service.motifRestitutions" [value]="type">
+        {{ type }}
+      </option>
+      <option value="Autre">Autre</option>
+    </select>
+    <div *ngIf="trasferttrouve.motifRestitution==='' && trasferttrouve.status==='Extourné'" class="error-message">motif Restitution is required</div>
+  </div>
+  <div class="col-md-6 mb-3" *ngIf="trasferttrouve.status==='Bloqué'">
+    <label>Select Motif of Blocage</label>
+    <select class="form-control input-field" id="motifRestitution" [(ngModel)]="trasferttrouve.motifBlicage" name="motifRestitution">
+      <option *ngFor="let type of service.BlocageMotifs" [value]="type">
+        {{ type }}
+      </option>
+      <option value="Autre">Autre</option>
+    </select>
+    <div *ngIf="trasferttrouve.motifRestitution==='' && trasferttrouve.status==='Bloqué'" class="error-message">motif Restitution is required</div>
+  </div>
+  <div class="form-group row">
+      <div *ngIf="(trasferttrouve.motifRestitution === 'Autre')||(trasferttrouve.motifBlicage === 'Autre') && (trasferttrouve.status==='Extourné'||trasferttrouve.status==='Bloqué')" class="col-md-6 mb-3">
+        <label>Saisir le motif </label>
+        <input type="text" class="form-control input-field" [(ngModel)]="trasferttrouve.autreMotif" name="autreMotifRestitution" required>
+      </div>
+      </div>
+</div>
+  <div class="form-group row">
+    <div class="col-md-6 mb-3">
+      <button type="submit" class="btn btn-warning btn-block" style="margin-right: 10px; background-color: #0F7490; border-color: #0F7490; color: white;">Submit</button>
+      <button type="submit" class="btn btn-primary btn-block" style="background-color: white; border-color: #0F7490; color: #0F7490;" (click)="TransfertAnnuler(form)">Cancel</button>
+    </div>
+  </div>
+</form>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+
+

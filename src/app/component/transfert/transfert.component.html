@@ -1,0 +1,240 @@
+
+<div class="container mt-4">
+  <div class="container mt-4">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div id="recaptcha-container"></div>
+        <div class="card">
+          <div class="card-body">
+            <form #searchForm="ngForm" (ngSubmit)="onSubmit(searchForm)">
+              <div class="row mb-3">
+                <div class="col">
+                  <div class="form-group">
+                    <select class="form-control"
+                            id="typeTransfert"
+                            [(ngModel)]="service.selectedTrnasfertType"
+                            name="selectedType"
+                            required
+                            (change)="resetFormloschangetype()"
+                            [ngClass]="{'error-input-required': searchForm.submitted && !service.selectedTrnasfertType}">
+                      <option value="" disabled>Select a transfer type</option>
+                      <option *ngFor="let type of service.typesTransfert" [value]="type">{{ type }}</option>
+                    </select>
+                    <!-- Ajoutez un message d'erreur -->
+                    <div *ngIf="searchForm.submitted && !service.selectedTrnasfertType" class="error-message-required">
+                      Please select a transfer type before searching.
+                    </div>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="form-group input-group">
+                    <input type="text" class="form-control" placeholder="Phone Number"
+                    [(ngModel)]="service.searchPhone" name="searchPhone" required *ngIf="service.selectedTrnasfertType !== 'En espèce'">
+                    <input type="text" class="form-control" id="numPiece" [(ngModel)]="service.searchPhone" placeholder="Client's ID Number"
+                    name="numPiece" required *ngIf="service.selectedTrnasfertType === 'En espèce'">
+                    <div class="input-group-append">
+                      <button type="submit" class="btn btn-warning" style="border-color:#0F7490; color:white;background-color: #0F7490;"><i class="bi bi-search"></i></button>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+              <!-- Champs supplémentaires pour le transfert "En espèce" -->
+              <div class="form-group row">
+                  <!-- Ajoutez ici les champs spécifiques au transfert "En espèce" -->
+                  <div class="col-md-6 mb-3" *ngIf="service.selectedTrnasfertType === 'En espèce'">
+                    <select class="form-control input-field" id="typePieceIdentite" [(ngModel)]="service.typePieceId" name="typePieceIdentite"
+                      [ngClass]="{'error-input-required': searchForm.submitted}" >
+                      <option value="" disabled>Select ID Type</option>
+                      <option *ngFor="let type of service.typePieceIdentite" [value]="type">
+                        {{ type }}
+                      </option>
+                    </select>
+                    <div *ngIf="searchForm.submitted && !service.typePieceIdentite " class="error-message">ID Type is required</div>
+                  </div>
+                  <!-- ici normalement on doit utiliser ID de l agent connecter pour utiliser sans ID pour utiliser sont compte lors du transfert en espece -->
+                  <div class="col-md-6 mb-3">
+                    <input type="text" class="form-control input-field" name="idagent"  [(ngModel)]="service.idagent"
+                      required placeholder="ID agent" [ngClass]="{'error-input-required': searchForm.submitted}">
+                    <div *ngIf="searchForm.submitted && !service.idagent" class="error-message">ID Agent is required</div>
+                  </div>
+                </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--Pour otp-->
+  <ng-container *ngIf="!service.transfertOTPVerified && service.transfertSubmitted" >
+    <div class="container mt-4">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <div class="card">
+      <div class="card-body">
+        <div class="d-flex align-items-center">
+          <label for="inputField">OTP</label>
+          <input type="number" [(ngModel)]="service.transfert.otp" id="otp" name="name" placeholder="Entrez L'OTP" required>
+          <!-- Ajoutez un bouton pour vérifier l'OTP -->
+          <button type="submit" class="btn btn-primary btn-warning" (click)="verifyOtp()" style="margin-right: 10px; background-color: #0F7490; border-color: #0F7490; color: white;">Verify</button>
+          <div *ngIf="errorMessage" class="text-danger mt-2">{{ errorMessage }}</div>
+        </div>
+    </div>
+    </div>
+  </div>
+</div>
+</div>
+  </ng-container>
+  <ng-container *ngIf="service.user.id && !service.UserNotexiste && !service.transfertSubmitted">
+  <div class="row justify-content-center mt-4">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+            <div class="form-group row">
+              <div class="col-md-6 mb-3">
+                <input type="text" class="form-control input-field"  name="name" #name="ngModel" [(ngModel)]="service.user.name" required placeholder="First Name">
+              </div>
+              <div class="col-md-6 mb-3">
+                <input type="text" class="form-control input-field"  name="lastName" #lastName="ngModel" [(ngModel)]="service.user.lastname" required placeholder="Last Name">
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-6 mb-3">
+                <input type="text" class="form-control input-field" name="gsm" #gsm="ngModel" [(ngModel)]="service.user.gsm" required placeholder="GSM">
+              </div>
+              <div class="col-md-6 mb-3">
+                <input type="text" class="form-control input-field"  name="email" #email="ngModel" [(ngModel)]="service.user.email" required placeholder="Email">
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-6 mb-3">
+                <select class="form-control input-field"  name="paysNationalite" #paysNationalite="ngModel" [(ngModel)]="service.user.paysNationalite" required>
+                  <option value="" disabled>Select Birth Country</option>
+                  <option *ngFor="let country of countries" [value]="country.country">
+                    {{ country.country }}
+                    <img [src]="country.flag" alt="{{ country.country }}" width="40" height="40" />
+                  </option>
+                </select>
+              </div>
+              <div class="col-md-6 mb-3">
+                <input type="text" class="form-control input-field"  name="ville" #ville="ngModel" [(ngModel)]="service.user.ville" required placeholder="City">
+              </div>
+            </div>
+            <!--AfficheFormOtp-->
+          <!-- <form #form="ngForm" (ngSubmit)="sendOtp(form)"> -->
+            <form #form="ngForm" (ngSubmit)="submitTransfertForm(form)">
+                <input type="hidden" class="form-control input-field"    name="id" [(ngModel)]="service.transfert.id">
+                <input type="hidden" class="form-control input-field"  name="otp"  [(ngModel)]="service.transfert.otp">
+                <input type="hidden" class="form-control input-field"  name="typeTransfert" required [(ngModel)]="service.transfert.typeTransfert">
+                <input type="hidden" class="form-control input-field"  name="idClient" required [(ngModel)]="service.transfert.idClient">
+                <input type="hidden" class="form-control input-field"  name="plafondmaximal" required [(ngModel)]="service.transfert.plafondmaximal">
+                <input type="hidden" class="form-control input-field"  name="plafondAnnuel" required [(ngModel)]="service.transfert.plafondAnnuel">
+                <input type="hidden" class="form-control input-field"  name="idagent" [(ngModel)]="service.transfert.idagent">
+                <input type="hidden" class="form-control input-field"  name="status" [(ngModel)]="service.transfert.status">
+                <input type="hidden" class="form-control input-field"  name="dataeExpiration" [(ngModel)]="service.transfert.dataeExpiration">
+                <input type="hidden" class="form-control input-field"  name="motifBlicage" [(ngModel)]="service.transfert.motifBlicage">
+                <input type="hidden" class="form-control input-field"  name="motifRestitution" [(ngModel)]="service.transfert.motifRestitution">
+                <input type="hidden" class="form-control input-field"  name="valfrais" [(ngModel)]="service.transfert.valfrais">
+                <input type="hidden" class="form-control input-field"  name="autreMotif" [(ngModel)]="service.transfert.autreMotif">
+                <div class="form-group row">
+                  <div class="col-md-6 mb-3"  style="display: flex; align-items: center;position: relative;">
+                    <select class="form-control input-field"
+                            name="idBeneficiaire"
+                            #idBeneficiaire="ngModel"
+                            [(ngModel)]="service.transfert.idBeneficiaire"
+                            required
+                            [ngClass]="{'error-input-required': form.submitted && idBeneficiaire.invalid}"
+                            style="flex: 1;">
+                      <option value="" disabled>Select Beneficiary</option>
+                      <option *ngFor="let beneficiary of service.listBeneficiaire" [value]="beneficiary.id">
+                        {{ beneficiary.prenom + ' ' + beneficiary.nom }}
+                      </option>
+                    </select>
+                    <!-- Bouton circulaire pour ajouter un bénéficiaire -->
+                    <button type="button" class="btn btn-circle  rounded-circle btn-sm"  style="flex-shrink: 0;margin-left: 5px;border-color: white;background-color: white;color: #0F7490;"
+                    (click)="afficherAddBeneficiaire()"
+                    >
+                      <i class="bi bi-person-plus-fill" style="font-size:20px;"></i> <!-- Remplacez cela par la classe d'icône appropriée -->
+                    </button>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <input type="number" class="form-control input-field"  #montant="ngModel" name="montant" required
+                    placeholder="Amount" [(ngModel)]="service.transfert.montant"
+                    (ngModelChange)="validateMontant()"
+                    [ngClass]="{'error-input': validateMontant()}"
+                    [min]="100"
+                    [ngClass]="{'error-input-required':form.submitted && montant.invalid}"
+                    step="100">
+                    <!-- Display the error message only if validateMontant() returns a truthy value -->
+                    <div class="error-message" *ngIf="validateMontant()">
+                      {{ validateMontant() }}
+                    </div>
+                    <div *ngIf="form.submitted && montant.invalid" class="error-message">Transfer Amount is required</div>
+                  </div>
+                  <app-add-beneficiaire *ngIf=" service.addBeneficiaireVisible "></app-add-beneficiaire>
+              </div>
+              <div class="form-group row">
+                <div class="col-md-6 mb-3">
+                  <select class="form-control input-field"  name="frais" [(ngModel)]="service.transfert.frais">
+                    <option value="" disabled>Select Fee Type</option>
+                    <option value="donneur">Paid by the ordering customer</option>
+                    <option value="beneficiaire">Paid by the beneficiary</option>
+                    <option value="partages">Shared fees</option>
+                  </select>
+                </div>
+                  <div class="col-md-6 mb-3">
+            <select class="form-control input-field" name="motifstransfert" [(ngModel)]="service.transfert.motifstransfert" required>
+              <option value="" disabled>Reasons for  National transfer</option>
+              <option *ngFor="let type of service.motifstransferts " [value]="type">
+                {{ type }}
+              </option>
+            </select>
+          </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-6 mb-3">
+                <mat-form-field style="background-color: white;">
+                  <label for="dateTransfert">Transfer Date</label>
+                  <input matInput [matDatepicker]="myDatepicker" id="dateTransfert" name="dateTransfert" [(ngModel)]="service.transfert.dateTransfert" required placeholder="Choose transfer date">
+                  <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
+                  <mat-datepicker #myDatepicker></mat-datepicker>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="notification" class="mr-3">Notification</label>
+                <div class="form-check form-check-inline radio-container">
+                  <input class="form-check-input" type="radio" id="notifiedYes" name="notified" [value]="true" [(ngModel)]="service.transfert.notified">
+                  <label class="form-check-label" for="notifiedYes">Yes</label>
+                </div>
+                <div class="form-check form-check-inline radio-container">
+                  <input class="form-check-input" type="radio" id="notifiedNo" name="notified" [value]="false" [(ngModel)]="service.transfert.notified">
+                  <label class="form-check-label" for="notifiedNo">No</label>
+                </div>
+              </div>
+            </div>
+              <div class="form-group row">
+                <div class="col-md-6 mb-3">
+                  <button type="submit" class="btn btn-warning btn-block" style="margin-right: 10px; background-color: #0F7490; border-color: #0F7490; color: white;">Submit</button>
+                  <button type="submit" class="btn btn-primary btn-block" style="background-color: white; border-color: #0F7490; color: #0F7490;" (click)="TransfertAnnuler()">Cancel</button>
+                </div>
+              </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+</div>
+<app-adduser *ngIf="service.UserNotexiste"></app-adduser>
+  <ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Preview Invoice : <b>{{transfertId}}</b></h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="d('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <ngx-extended-pdf-viewer [src]="pdfurl"></ngx-extended-pdf-viewer>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" (click)="d('Cross click')">Close</button>
+    </div>
+  </ng-template>
