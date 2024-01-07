@@ -11,11 +11,11 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./add-beneficiaire.component.css']
 })
 export class AddBeneficiaireComponent {
-  constructor(public service: TransfertService,private cdr: ChangeDetectorRef,public router: Router,private toastr: ToastrService) { }
+  constructor(public service: TransfertService, private cdr: ChangeDetectorRef, public router: Router, private toastr: ToastrService) { }
   updateUser() {
 
-    this.service.EditUser(this.service.user.id,this.service.user).subscribe({
-      next:res=>{
+    this.service.EditUser(this.service.user.id, this.service.user).subscribe({
+      next: res => {
         console.log(res);
 
       },
@@ -31,23 +31,33 @@ export class AddBeneficiaireComponent {
   }
 
   onSubmitBeneficiary(form: NgForm) {
-    this.service.ajouterBeneficaire(this.service.beneficiary).subscribe({
+    delete this.service.beneficiary.id;
+    this.service.ajouterBeneficaire(this.service.beneficiary, this.service.user.email).subscribe({
       next: (res) => {
         console.log("Mlle. RAJAE");
+        console.log("***********************************");
+        console.log(res as Beneficiaire, this.service.user.beneficiaires);
+        console.log("***********************************");
         this.service.beneficiary = res as Beneficiaire;
-        this.service.user.beneficiaires.push(this.service.beneficiary.id);
-        this.updateUser();
-        console.log("Beneficiaire ID: " + this.service.beneficiary.id);
+
+        if (this.service.user.beneficiaires) {
+          this.service.user.beneficiaires.push(res.id);
+        } else {
+          this.service.user.beneficiaires = [res.id]
+        }
+        // this.updateUser();
 
         // Ajoutez l'appel à la fonction pour mettre à jour la liste des bénéficiaires
-        this.service.getBeneficiaire(this.service.user.id).subscribe({
+        this.service.getBeneficiaire(this.service.user.email).subscribe({
           next: res => {
+
             this.service.listBeneficiaire = res as Beneficiaire[];
             console.log('Liste des bénéficiaires mise à jour :', this.service.listBeneficiaire);
             // Manually trigger change detection
             this.cdr.detectChanges();
-            this.toastr.error('Success', 'Beneficiary successfully added', {
-              timeOut: 1500 });
+            this.toastr.success('Success', 'Beneficiary successfully added', {
+              timeOut: 1500
+            });
           },
           error: err => {
             console.log(err);
@@ -69,9 +79,9 @@ export class AddBeneficiaireComponent {
     });
   }
 
-// si agent  clic sur le button annuler lors de l ajout d un beneficaire:
-beneficiaryFormreset() {
-  this.service.resetBeneficaireForm();
-  this.service.addBeneficiaireVisible = false;
-}
+  // si agent  clic sur le button annuler lors de l ajout d un beneficaire:
+  beneficiaryFormreset() {
+    this.service.resetBeneficaireForm();
+    this.service.addBeneficiaireVisible = false;
+  }
 }

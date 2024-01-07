@@ -1,5 +1,5 @@
 export const environment = {
-  apiBaseUrl :'https://localhost:7071/api/',
+  apiBaseUrl :'http://localhost:5088/api/',
   firebaseConfig: {
     apiKey: "AIzaSyDAxIGb8n-DEIk8YEUOut917OfwS9jSmJM",
     authDomain: "e-bank-cd578.firebaseapp.com",

@@ -30,7 +30,7 @@
                   <div class="form-group input-group">
                     <input type="text" class="form-control" placeholder="Phone Number"
                     [(ngModel)]="service.searchPhone" name="searchPhone" required *ngIf="service.selectedTrnasfertType !== 'En espèce'">
-                    <input type="text" class="form-control" id="numPiece" [(ngModel)]="service.searchPhone" placeholder="Client's ID Number"
+                    <input type="text" class="form-control" id="numPiece" [(ngModel)]="service.numPiece" placeholder="Client's ID Number"
                     name="numPiece" required *ngIf="service.selectedTrnasfertType === 'En espèce'">
                     <div class="input-group-append">
                       <button type="submit" class="btn btn-warning" style="border-color:#0F7490; color:white;background-color: #0F7490;"><i class="bi bi-search"></i></button>

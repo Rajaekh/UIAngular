@@ -52,7 +52,7 @@ getUserByIdentity():void{
         console.log(this.service.user);
 
         if (this.service.user) {
-          this.service.getBeneficiaire(this.service.user.id)
+          this.service.getBeneficiaire(this.service.user.email)
             .subscribe({
               next: (resBeneficiaire) => {
                 this.service.listBeneficiaire = resBeneficiaire as Beneficiaire[];
@@ -95,13 +95,15 @@ getUserByIdentity():void{
           console.log(this.service.user);
           this.service.transfert.plafondmaximal=2000;
           if (this.service.user) {
-            this.service.getBeneficiaire(this.service.user.id)
+            this.service.getBeneficiaire(this.service.user.email)
               .subscribe({
                 next: (resBeneficiaire) => {
                   this.service.listBeneficiaire = resBeneficiaire as Beneficiaire[];
                   this.service.transfert.typeTransfert = this.service.selectedTrnasfertType;
                   this.service.transfert.idClient = this.service.user.id;
-                  console.log(this.service.listBeneficiaire);
+                  console.log("***************************************");
+                  console.log(resBeneficiaire, this.service.listBeneficiaire);
+                  console.log("**************************************");
                 },
                 error: (errBeneficiaire) => {
                   console.log(errBeneficiaire);
@@ -134,8 +136,11 @@ getUserByIdentity():void{
   }
 
   onSubmit(form: NgForm) {
+    alert(this.service.numPiece)    
+
     if (form.valid) {
       if(this.service.numPiece){
+
         this.getUserByIdentity();
         this.service.transfert.plafondmaximal=8000;
         this.service.transfert.idagent=this.service.idagent;

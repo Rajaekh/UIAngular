@@ -9,7 +9,7 @@
           <div class="card-body">
 <form #userForm="ngForm" (ngSubmit)="onSubmit(userForm)">
         <div class="form-group row">
-          <input type="hidden" class="form-control input-field" name="id" #id="ngModel" [(ngModel)]="service.user.id"  >
+          <!-- <input type="hidden" class="form-control input-field" name="id" #id="ngModel" [(ngModel)]="service.user.id"  > -->
           <input type="hidden" class="form-control input-field" name="role" #role="ngModel" [(ngModel)]="service.user.role"  >
           <input type="hidden" name="estSupprimer" [(ngModel)]="service.user.estSupprimer">
           <input type="hidden" name="surListeNoire" [(ngModel)]="service.user.surListeNoire">
@@ -39,6 +39,12 @@
             <input type="text" class="form-control input-field" name="email" #email="ngModel" [(ngModel)]="service.user.email" required placeholder="Email"
             [ngClass]="{'error-input-required': userForm.submitted && email.invalid}">
             <div *ngIf="userForm.submitted && email.invalid" class="error-message">Email is required</div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <input type="password" class="form-control input-field" 
+            name="password" [(ngModel)]="service.user.password"
+             required placeholder="password"
+          >
           </div>
         </div>
         <div class="form-group row">

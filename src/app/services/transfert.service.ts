@@ -118,8 +118,8 @@ export class TransfertService {
   getUserById(userId: string): Observable<User> {
     return this.http.get<User>(this.url+'User/UserById/'+userId);
   }
-  getBeneficiaire(IdUser: string): Observable<Beneficiaire[]> {
-    return this.http.get<Beneficiaire[]>(this.url + 'User/beneficiaire/' +IdUser);
+  getBeneficiaire(username: string): Observable<Beneficiaire[]> {
+    return this.http.get<Beneficiaire[]>(this.url + "User/beneficiaire/" + username);
   }
 
   validateMontant(montant: number): string {
@@ -196,8 +196,9 @@ resetUser(): void {
   };
 
 }
-ajouterBeneficaire(beneficaire:Beneficiaire): Observable<Beneficiaire> {
-  return this.http.post<Beneficiaire>(this.url + 'Beneficaires', beneficaire);
+
+ajouterBeneficaire(beneficaire:Beneficiaire, email: string): Observable<Beneficiaire> {
+  return this.http.post<Beneficiaire>(this.url + 'Beneficaires/'+email, beneficaire);
 }
 // pour Modifier un user
 EditUser(id:string, user: User): Observable<User> {
@@ -228,6 +229,7 @@ return this.http.post<User>(this.url+'User',user);
   this.searchPhone='';
   this.selectedTrnasfertType="";
   this.idagent='';}
+  
   ListTransfert(): Observable<transferModel[]> {
     return this.http.get<transferModel[]>(this.url + 'Transfert');
   }
@@ -242,7 +244,7 @@ return this.http.post<User>(this.url+'User',user);
     return this.http.get<User[]>(this.url+'User');
   }
   ReInitialiseListBeneficiaire(): void {
-    this.getBeneficiaire(this.user.id).subscribe({
+    this.getBeneficiaire(this.user.email).subscribe({
       next: res => {
         this.listBeneficiaire = res as Beneficiaire[];
         console.log('Liste des bénéficiaires mise à jour :', this.listBeneficiaire);
