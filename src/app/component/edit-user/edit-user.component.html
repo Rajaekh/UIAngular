@@ -7,7 +7,7 @@
       <div class="col-md-6">
         <div class="card">
           <div class="card-body">
-<form #userForm="ngForm" (ngSubmit)="onSubmit(userForm)">
+        <form #userForm="ngForm" (ngSubmit)="onSubmit(userForm)">
         <div class="form-group row">
           <input type="hidden" class="form-control input-field" name="id" #id="ngModel" [(ngModel)]="service.user.id"  >
           <input type="hidden" class="form-control input-field" name="role" #role="ngModel" [(ngModel)]="service.user.role"  >
@@ -95,7 +95,7 @@
   <div class="col-md-6 mb-3">
     <select class="form-control input-field" name="paysNationalite" #paysNationalite="ngModel" [(ngModel)]="service.user.paysNationalite" required>
       <option value="" disabled>Select Birth Country</option>
-      <option *ngFor="let country of countries" [value]="country.country">
+      <option *ngFor="let country of service.countries" [value]="country.country">
         {{ country.country }}
         <img [src]="country.flag" alt="{{ country.country }}" width="40" height="40" />
       </option>
@@ -109,7 +109,7 @@
           <div class="col-md-6 mb-3">
             <select class="form-control input-field" name="paysAdresse" #paysAdresse="ngModel" [(ngModel)]="service.user.paysAdresse" required>
               <option value="" disabled>Select Address Country</option>
-              <option *ngFor="let country of countries" [value]="country.country">
+              <option *ngFor="let country of service.countries" [value]="country.country">
                 {{ country.country }}
                 <img [src]="country.flag" alt="{{ country.country }}" width="40" height="40" />
               </option>
@@ -134,8 +134,8 @@
         </div>
         <div class="form-group row">
           <div class="col-md-6 mb-3">
-              <button type="submit" class="btn btn-warning btn-block" style="margin-right: 10px; background-color: #0F7490; border-color: #0F7490; color: white;">Add Client</button>
-              <button type="submit" class="btn btn-primary btn-block" style="background-color: white; border-color: #0F7490; color: #0F7490;" (click)="CancelAdd()">Cancel</button>
+              <button type="submit" class="btn btn-warning btn-block" style="margin-right: 10px; background-color: #0F7490; border-color: #0F7490; color: white;">Save</button>
+              <button type="submit" class="btn btn-primary btn-block" style="background-color: white; border-color: #0F7490; color: #0F7490;" (click)="CancelEditUser(userForm)">Cancel</button>
             </div>
           </div>
   </form>

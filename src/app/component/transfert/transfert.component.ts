@@ -35,6 +35,7 @@ export class TransfertComponent implements OnInit {
     this.service.getCountries().subscribe((data) => {
       this.countries = data.data;
     });
+    this.service.ReInitialiseListBeneficiaire();
   }
 
 
@@ -150,7 +151,7 @@ getUserByIdentity():void{
     }
   }
   // pour faire la soumission de la formulaire du transfert:submitTransfertForm(form)
-  submitTransfertForm(form:NgForm) { 
+  submitTransfertForm(form:NgForm) {
     if(this.validationMessage){
       this.toastr.error('Error', this.validationMessage, {
         timeOut: 3000
@@ -160,9 +161,9 @@ getUserByIdentity():void{
       this.service.ajouterTransfert(this.service.transfert).subscribe({
         next: (res) => {
            // Accédez à l'identifiant dans l'objet de réponse
-         const nouvelIdentifiant = res.id;
+          const nouvelIdentifiant = res.id;
           console.log('le transfert est bien passé');
-          this.PreviewInvoice(nouvelIdentifiant);
+          this.PrintInvoice(nouvelIdentifiant);
 
           //fait reset pour user et aussi pour transfert
           this.service.resetUser();

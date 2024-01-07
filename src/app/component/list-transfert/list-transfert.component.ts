@@ -13,6 +13,11 @@ export class ListTransfertComponent implements OnInit {
   trasferttrouve:transferModel;
   pdfurl: string = "";
   transfertId: any;
+  page:number=1;
+  totalLenght:any;
+
+
+
   @ViewChild('content') popupview !: ElementRef;
   constructor(public service: TransfertService,private toastr: ToastrService,private router: Router,
 

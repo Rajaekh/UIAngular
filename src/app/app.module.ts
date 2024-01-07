@@ -26,6 +26,11 @@ import { environment } from 'src/environments/environment.development';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ListUserComponent } from './component/list-user/list-user.component';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { EditUserComponent } from './component/edit-user/edit-user.component';
+import { ConfirmationDialogComponent } from './component/confirmation-dialog/confirmation-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -38,7 +43,9 @@ import { ListUserComponent } from './component/list-user/list-user.component';
      HomeComponent,
      EditTransfertStatusComponent,
      EditTransfertComponent,
-     ListUserComponent
+     ListUserComponent,
+     EditUserComponent,
+     ConfirmationDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -54,8 +61,9 @@ import { ListUserComponent } from './component/list-user/list-user.component';
     NgxExtendedPdfViewerModule, // Ajoutez cette ligne
     AngularFireModule.initializeApp(environment.firebaseConfig),
     ToastrModule.forRoot(),
-    NgbModule // ToastrModule added here
-
+    NgxPaginationModule,
+    NgbModule ,// ToastrModule added here
+    MatDialogModule,
 
   ],
   providers: [],

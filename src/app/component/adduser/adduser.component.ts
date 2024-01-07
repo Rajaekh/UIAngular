@@ -2,13 +2,14 @@ import { Component,OnInit } from '@angular/core';
 import { TransfertService } from '../../services/transfert.service';
 import { Form, NgForm } from '@angular/forms';
 import { User } from 'src/app/models/user.model';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-adduser',
   templateUrl: './adduser.component.html',
   styleUrls: ['./adduser.component.css']
 })
 export class AdduserComponent {
-  constructor(public service: TransfertService) { }
+  constructor(public service: TransfertService,router: Router) { }
   countries: any[] = [];
 
   ngOnInit(): void {
@@ -32,7 +33,8 @@ export class AdduserComponent {
           this.service.user.id=this.service.user.id;
           this.service.searchPhone=this.service.user.gsm;
           this.service.pieceType=this.service.user.typePieceIdentity;
-          this.service.numPiece=this.service.user.n_identity;
+          this.service.numPiece=this.service.user.nIdentity;
+        
         } else {
           console.log('Invalid response:', res);
           // Handle the invalid response as needed

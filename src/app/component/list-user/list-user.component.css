@@ -1,0 +1,18 @@
+.pagination
+{
+padding: 20px 16px;
+float: right;
+font-size: 14px;
+}
+.pagination::ng-deep .ngx-pagination .current{
+
+background: #ffff;
+color: #0F7490;
+border: 1px solid #0F7490 ;
+border-radius: 5px;
+}
+.pagination::ng-deep .ngx-pagination .current:hover {
+  background: #0F7490;
+  color: #ffffff;  /* Couleur du texte lorsqu'il est survolé */
+  border: 1px solid #0F7490;
+}

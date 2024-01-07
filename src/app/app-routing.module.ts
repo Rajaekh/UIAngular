@@ -10,9 +10,11 @@ import { HomeComponent } from './component/home/home.component';
 import { ListTransfertComponent } from './component/list-transfert/list-transfert.component';
 import { EditTransfertComponent } from './component/edit-transfert/edit-transfert.component';
 import { ListUserComponent } from './component/list-user/list-user.component';
+import { EditUserComponent } from './component/edit-user/edit-user.component';
 const routes: Routes = [
   { path: '', component:HomeComponent},
   { path: 'editT/:id', component: EditTransfertComponent },
+  { path: 'edituser/:id', component:EditUserComponent},
   { path: 'list/transfer', component:ListTransfertComponent},
   { path: 'transfert', component: TransfertComponent },
   { path: 'test', component:TestComponent},

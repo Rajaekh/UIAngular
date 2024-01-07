@@ -41,7 +41,7 @@ export class TransfertService {
     role:Role.CLIENT,
     titre: "",
     typePieceIdentity:"",
-    n_identity: "",
+    nIdentity: "",
     gsm: "",
     paysEmission: "",
     numeroPieceIdentite: "",
@@ -83,7 +83,7 @@ export class TransfertService {
     reference:"",
   };
   beneficiary:Beneficiaire={
-    id: '',
+      id: '',
       nom: '',
       prenom: '',
       numeroGsm: '',
@@ -103,6 +103,7 @@ export class TransfertService {
   addBeneficiaireVisible = false;
   transfertSubmitted: boolean =false;
   url: string = environment.apiBaseUrl;
+  countries: any[] = [];
   private apiUrl = 'https://countriesnow.space/api/v0.1/countries';
   getCountries(): Observable<any> {
     return this.http.get<any>(this.apiUrl);
@@ -114,7 +115,9 @@ export class TransfertService {
   searchUser(gsm: string): Observable<User> {
     return this.http.get<User>(this.url + 'User/'+gsm);
   }
-
+  getUserById(userId: string): Observable<User> {
+    return this.http.get<User>(this.url+'User/UserById/'+userId);
+  }
   getBeneficiaire(IdUser: string): Observable<Beneficiaire[]> {
     return this.http.get<Beneficiaire[]>(this.url + 'User/beneficiaire/' +IdUser);
   }
@@ -149,7 +152,7 @@ resetUser(): void {
     role: Role.CLIENT,
     titre: "",
     typePieceIdentity: "",
-    n_identity: "",
+    nIdentity: "",
     gsm: "",
     paysEmission: "",
     numeroPieceIdentite: "",
@@ -238,7 +241,24 @@ return this.http.post<User>(this.url+'User',user);
   ListUser():Observable<User[]> {
     return this.http.get<User[]>(this.url+'User');
   }
+  ReInitialiseListBeneficiaire(): void {
+    this.getBeneficiaire(this.user.id).subscribe({
+      next: res => {
+        this.listBeneficiaire = res as Beneficiaire[];
+        console.log('Liste des bénéficiaires mise à jour :', this.listBeneficiaire);
+        // Manually trigger change detection
 
+      },
+      error: err => {
+        console.log(err);
+      }
+    });
+  }
+
+
+  deleteUser(id: string): Observable<any> {
+    return this.http.delete<any>(`${this.url}User/${id}`);
+  }
 }
 
 

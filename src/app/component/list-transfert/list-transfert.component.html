@@ -1,6 +1,4 @@
 
-
-
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -34,7 +32,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr  *ngFor="let trans of service.transfers">
+      <tr  *ngFor="let trans of service.transfers|paginate:{itemsPerPage:5,currentPage:page,totalItems:totalLenght}">
         <td >
           {{trans.typeTransfert}}
         </td>
@@ -74,5 +72,14 @@
       </tr>
     </tbody>
   </table>
+
 </div>
 
+
+      <div class="pagination">
+        <pagination-controls
+        (pageChange)="page = $event"
+        previousLabel="Prev"
+        nextLabel="Next"
+        [responsive]="true"
+      ></pagination-controls>

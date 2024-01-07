@@ -5,10 +5,10 @@
       <div class="navbar-nav me-auto mb-2 mb-lg-0">
       </div>
       <form class="d-flex" #form="ngForm" (ngSubmit)="searchUser()">
-        <!-- <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"> -->
-        <input type="text" class="form-control me-2" placeholder="User GSM" [(ngModel)]="service.gsm" name="gsm" required aria-label="Search">
+      <input type="text" class="form-control me-2" placeholder="User GSM" [(ngModel)]="service.gsm" name="gsm" required aria-label="Search">
         <button type="submit" class="btn btn-warning" style="border-color:#0F7490; color:white;background-color: #0F7490;"><i class="bi bi-search"></i></button>
       </form>
+
     </div>
   </div>
 </nav>
@@ -26,7 +26,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr  *ngFor="let user of service.users">
+    <tr  *ngFor="let user of service.users|paginate:{itemsPerPage:5,currentPage:page,totalItems:totalLenght}">
       <td >
           {{user.name}}
       </td>
@@ -46,12 +46,19 @@
         {{user.paysAdresse}}
       </td>
       <td >
-        <a class="btn btn-sm" style="background-color: white;color: #0F7490; font-size:20px;" ><i class="bi bi-pencil-square" style="font-weight: bold; width: 16px;height: 16px;"></i></a>
-        <a class="btn btn-sm" style="background-color: white;color: hsl(6, 92%, 61%); font-size:20px;" ><i class="bi bi-trash2" style="font-weight: bold; width: 16px;height: 16px;"></i></a>
-
+        <a class="btn btn-sm" style="background-color: white;color: #0F7490; font-size:20px;" [routerLink]="['/edituser', user.id]"><i class="bi bi-pencil-square" style="font-weight: bold; width: 16px;height: 16px;"></i></a>
+        <a class="btn btn-sm" style="background-color: white;color: hsl(6, 92%, 61%); font-size:20px;" (click)=" deleteUser(user.id)"><i class="bi bi-trash2" style="font-weight: bold; width: 16px;height: 16px;"></i></a>
       </td>
     </tr>
   </tbody>
 </table>
+<div class="pagination">
+  <pagination-controls
+  (pageChange)="page = $event"
+  previousLabel="Prev"
+  nextLabel="Next"
+  [responsive]="true"
+></pagination-controls>
+
 </div>
 
